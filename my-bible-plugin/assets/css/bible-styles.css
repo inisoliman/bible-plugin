@@ -1,0 +1,91 @@
+.bible-controls {
+    margin-bottom: 15px;
+}
+
+.bible-controls button {
+    margin-right: 10px;
+    padding: 5px 10px;
+    cursor: pointer;
+    background-color: #f0f0f0;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+}
+
+.bible-controls button:hover {
+    background-color: #e0e0e0;
+}
+
+.verse-number {
+    display: inline-block;
+    font-weight: bold;
+    margin-right: 5px;
+    color: #555;
+    text-decoration: none;
+}
+
+.verse-number:hover {
+    text-decoration: underline;
+}
+
+.verse-text {
+    margin-bottom: 10px;
+}
+
+.chapter-navigation {
+    margin-top: 20px;
+    overflow: hidden;
+}
+
+.chapter-navigation a {
+    padding: 10px 15px;
+    background-color: #f0f0f0;
+    text-decoration: none;
+    border-radius: 5px;
+}
+
+.chapter-navigation a:hover {
+    background-color: #e0e0e0;
+}
+
+.bible-search-form {
+    margin-bottom: 20px;
+}
+
+.bible-search-form input[type="text"] {
+    padding: 5px;
+    width: 200px;
+}
+
+.bible-search-form button {
+    padding: 5px 10px;
+    background-color: #f0f0f0;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+    cursor: pointer;
+}
+
+.bible-search-form button:hover {
+    background-color: #e0e0e0;
+}
+
+.pagination {
+    margin-top: 20px;
+}
+
+.pagination a {
+    margin-right: 5px;
+    text-decoration: none;
+    padding: 5px 10px;
+    background-color: #f0f0f0;
+    border-radius: 3px;
+}
+
+.pagination a:hover {
+    background-color: #e0e0e0;
+}
+
+.highlight {
+    background-color: #ffeb3b; /* لون أصفر للإبراز */
+    padding: 2px 5px;
+    border-radius: 3px;
+}
