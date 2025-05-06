@@ -2,17 +2,6 @@
 function bible_custom_template($template) {
     global $wp_query, $wpdb;
 
-    // تسجيل الـ JavaScript
-    add_action('wp_enqueue_scripts', function() {
-        wp_enqueue_script(
-            'bible-scripts',
-            plugin_dir_url(__FILE__) . 'assets/js/bible-scripts.js',
-            array(),
-            '1.0.0',
-            true
-        );
-    });
-
     // تحقق إذا كان الرابط هو bible_read (صفحة القراءة)
     if (get_query_var('pagename') == 'bible_read') {
         $wp_query->is_404 = false;
@@ -47,16 +36,33 @@ function bible_custom_template($template) {
         $chapter = get_query_var('chapter') ? intval(get_query_var('chapter')) : 0;
         $verse = get_query_var('verse') ? intval(get_query_var('verse')) : null;
 
+        // رسائل تصحيح للتأكد من القيم المستخرجة من get_query_var
+        error_log('get_query_var book: ' . $book);
+        error_log('get_query_var chapter: ' . $chapter);
+        error_log('get_query_var verse: ' . $verse);
+
         // لو get_query_var ما جابش قيم، نستخرج القيم يدويًا من الرابط
-        if (empty($book)) {
+        if (empty($book) || !$chapter) {
             $request_uri = $_SERVER['REQUEST_URI'];
             $path = parse_url($request_uri, PHP_URL_PATH);
+            $path = rtrim($path, '/'); // إزالة الـ / الأخيرة لو موجودة
             $path_parts = explode('/', trim($path, '/'));
 
-            if (isset($path_parts[1]) && $path_parts[1] == 'bible') {
-                $book = isset($path_parts[2]) ? rawurldecode($path_parts[2]) : '';
-                $chapter = isset($path_parts[3]) ? intval($path_parts[3]) : 0;
-                $verse = isset($path_parts[4]) ? intval($path_parts[4]) : null;
+            // رسالة تصحيح للتأكد من الرابط
+            error_log('Request URI: ' . $request_uri);
+            error_log('Path: ' . $path);
+            error_log('Path Parts: ' . print_r($path_parts, true));
+
+            // التأكد إن الرابط بيبدأ بـ bible
+            if (!empty($path_parts) && $path_parts[0] == 'bible') {
+                $book = isset($path_parts[1]) ? rawurldecode($path_parts[1]) : '';
+                $chapter = isset($path_parts[2]) ? intval($path_parts[2]) : 0;
+                $verse = isset($path_parts[3]) ? intval($path_parts[3]) : null;
+
+                // رسائل تصحيح للتأكد من القيم المستخرجة يدويًا
+                error_log('Manually extracted book: ' . $book);
+                error_log('Manually extracted chapter: ' . $chapter);
+                error_log('Manually extracted verse: ' . $verse);
             }
         }
 
@@ -161,7 +167,7 @@ function bible_custom_template($template) {
                 <div class="bible-controls">
                     <button id="toggle-tashkeel" onclick="toggleTashkeel()"><i class="fas fa-language"></i> إلغاء التشكيل</button>
                     <button id="increase-font" onclick="changeFontSize(2)"><i class="fas fa-plus"></i> تكبير الخط</button>
-                    <button id="decrease-font" onclick="changeFontSize(-2)"><i class="fas fa-minus"></i> تصغير الخط</button>
+            <button id="decrease-font" onclick="changeFontSize(-2)"><i class="fas fa-minus"></i> تصغير الخط</button>
                 </div>
                 <p class="verse-text" data-original-text="<?php echo esc_attr($result->text); ?>" data-verse-url="<?php echo esc_url(home_url("/bible/" . $result->book . "/{$result->chapter}/{$result->verse}")); ?>">
                     <a href="<?php echo esc_url(home_url("/bible/" . $result->book . "/{$result->chapter}/{$result->verse}")); ?>" class="verse-number"><?php echo esc_html($result->verse); ?>.</a> 
